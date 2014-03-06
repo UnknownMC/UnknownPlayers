@@ -1,0 +1,29 @@
+name: UnknownPlayers
+author: MrEinStain
+version: 1.2
+softdepend: [UnknownMC]
+main: net.unknownmc.players.UnknownPlayers
+commands:
+  player:
+    description: Get a player's playtime.
+    aliases: [playerinfo, plinfo, playtime, rankup]
+    permissions: unknownmc.playtime
+  demote:
+    description: Demote a staff member.
+    permissions: unknownmc.demote
+  topplayers:
+    description: Top play times
+    permissions: derp.herp
+permissions:
+  unknownmc.playtime:
+    default: true
+  unknownmc.playtime.other:
+    default: op
+#  unknownmc.player:
+#    default: false
+  unknownmc.playtime.detailed:
+    default: op
+  unknownmc.demote:
+    default: op
+  derp.herp:
+    default: false

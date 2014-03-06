@@ -1,0 +1,3 @@
+rankup:
+  time: 720 #minutes
+  command: 'manuadd %s default'
