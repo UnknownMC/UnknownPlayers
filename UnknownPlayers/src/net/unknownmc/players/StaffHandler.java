@@ -33,7 +33,7 @@ public class StaffHandler {
 		pl = player;
 	}
 	
-	public boolean demote(boolean fire) {
+	public boolean demote() {
 		if (error) {
 			return false;
 		}
@@ -49,9 +49,6 @@ public class StaffHandler {
 		}
 		
 		String n3w = "vip";
-		if (fire) {
-			n3w = "Default";
-		}
 		usrs.set(path, n3w);
 		try {
 			usrs.save(users);
