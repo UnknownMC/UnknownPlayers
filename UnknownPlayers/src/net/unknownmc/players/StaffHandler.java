@@ -2,7 +2,6 @@ package net.unknownmc.players;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -27,8 +26,7 @@ public class StaffHandler {
 			usrs = YamlConfiguration.loadConfiguration(users);
 		}
 		
-		staffR = new ArrayList<String>();
-		staffR.add("Moderator");
+		staffR = UnknownPlayers.config.getStringList("demote.demote-groups");
 		
 		pl = player;
 	}
@@ -48,7 +46,7 @@ public class StaffHandler {
 			return false;
 		}
 		
-		String n3w = "vip";
+		String n3w = UnknownPlayers.config.getString("demote.demote-to-group");
 		usrs.set(path, n3w);
 		try {
 			usrs.save(users);
