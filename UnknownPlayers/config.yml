@@ -1,3 +1,10 @@
+default-world: world
 rankup:
   time: 720 #minutes
-  command: 'manuadd %s default'
+  group: Player
+demote:
+  demote-to-group: VIP
+  demote-groups:
+  - Moderator
+  - Admin
+  - Helper
