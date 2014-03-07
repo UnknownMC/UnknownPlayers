@@ -18,8 +18,8 @@ permissions:
     default: true
   unknownmc.playtime.other:
     default: op
-#  unknownmc.player:
-#    default: false
+  unknownmc.player:
+    default: false
   unknownmc.playtime.detailed:
     default: op
   unknownmc.demote:
