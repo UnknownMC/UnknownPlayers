@@ -36,7 +36,7 @@ public class PromotePlayers extends BukkitRunnable {
     					String group = UnknownPlayers.config.getString("rankup.group");
     					Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mansave");
     					String path = "users." + pl + ".group";
-    					File gmDir = new File(Bukkit.getServer().getPluginManager().getPlugin("GroupManager").getDataFolder(), File.separator + "worlds" + File.separator + "unknownmc");
+    					File gmDir = new File(Bukkit.getServer().getPluginManager().getPlugin("GroupManager").getDataFolder(), File.separator + "worlds" + File.separator + UnknownPlayers.config.getString("default-world"));
     					File users = new File(gmDir, "users.yml");
     					YamlConfiguration usrs;
     					if (!users.isFile()) {

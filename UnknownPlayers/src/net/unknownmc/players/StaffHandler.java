@@ -17,7 +17,7 @@ public class StaffHandler {
 	private static List<String> staffR;
 	
 	public StaffHandler(String player) {
-		File gmDir = new File(Bukkit.getServer().getPluginManager().getPlugin("GroupManager").getDataFolder(), File.separator + "worlds" + File.separator + "unknownmc");
+		File gmDir = new File(Bukkit.getServer().getPluginManager().getPlugin("GroupManager").getDataFolder(), File.separator + "worlds" + File.separator + UnknownPlayers.config.getString("default-world"));
 		users = new File(gmDir, "users.yml");
 		if (!users.isFile()) {
 			UnknownPlayers.log.severe(users.getAbsolutePath() + " doesn't exist!");
