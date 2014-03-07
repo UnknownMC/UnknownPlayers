@@ -22,7 +22,7 @@ public class CommandsHandler implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String lbl, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("player")) {
 			if (!sender.hasPermission("unknownmc.playtime")) {
-				sender.sendMessage(ChatColor.RED + "Such access. Many denied. Very HTTP 403 (even though this wasn't an HTTP request but whatever). Wow.");
+				sender.sendMessage(ChatColor.RED + "No access");
 				return true;
 			}
 			String player = "";
@@ -109,21 +109,8 @@ public class CommandsHandler implements CommandExecutor {
 				sender.sendMessage(ChatColor.RED + "Why are you even trying to demote somebody?!");
 				return true;
 			}
-			if ((args.length > 2) || (args.length < 1)) {
-				sender.sendMessage(ChatColor.RED + "/demote <staff member's name> [fire]" + ChatColor.GREEN + " - only include 'fire' if you want them to be [Player] and not [VIP].");
-				return true;
-			}
-			boolean fire = false;
-			if (args.length == 2) {
-				if (!args[1].equalsIgnoreCase("fire")) {
-					sender.sendMessage(ChatColor.RED + "Argument 2 can only be " + ChatColor.DARK_RED + "fire" + ChatColor.RED + " (moves the former mod to Player instead of VIP)");
-					return true;
-				} else {
-					fire = true;
-				}
-			}
 			StaffHandler sh = new StaffHandler(args[0]);
-			if (sh.demote(fire)) {
+			if (sh.demote()) {
 				sender.sendMessage(ChatColor.GREEN + args[0] + " is no longer a staff member.");
 				return true;
 			} else {
