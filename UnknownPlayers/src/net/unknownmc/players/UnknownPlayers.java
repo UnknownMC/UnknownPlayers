@@ -19,16 +19,6 @@ public class UnknownPlayers extends JavaPlugin {
 	public static File folder;
 	
 	public void onEnable() {
-		if (Bukkit.getServer().getPluginManager().getPlugin("UnknownMC") == null) {
-			System.out.println("UnknownMC needs UnknownMC!");
-			Bukkit.getServer().getPluginManager().disablePlugin(this);
-			return;
-		} if (!(Bukkit.getServer().getPluginManager().getPlugin("UnknownMC").isEnabled())) {
-			System.out.println("UnknownMC needs UnknownMC!");
-			Bukkit.getServer().getPluginManager().disablePlugin(this);
-			return;
-		}
-		
 		getCommand("player").setExecutor(new CommandsHandler());
 		getCommand("demote").setExecutor(new CommandsHandler());
 		
