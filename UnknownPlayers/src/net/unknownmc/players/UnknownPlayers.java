@@ -2,6 +2,9 @@ package net.unknownmc.players;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -46,7 +49,11 @@ public class UnknownPlayers extends JavaPlugin {
 			config.set("config.version", 2);
 			this.saveConfig();
 		}
-		
+		if (config.getInt("config.version") < 3) {
+			convertToUUID();
+			config.set("config.version", 3);
+			this.saveConfig();
+		}
 	}
 	
 	public void convertToLowercase() {
@@ -59,6 +66,35 @@ public class UnknownPlayers extends JavaPlugin {
 			}
 		}
 		log.info("Finished converting old player files to lowercase!");
+	}
+	
+	public void convertToUUID() {
+		log.info("Converting all old player files to use the UUIDs, this one time process will delay the start up time this one time!");
+		for (File fl : folder.listFiles()) {
+			if (fl.isFile()) {
+				String name = fl.getName();
+				name = name.substring(0, name.length()-4); // trim the ".yml"
+				UUID uuid = UUID.fromString(""); // TODO
+				File targ = new File(fl.getParentFile(), uuid.toString());
+				log.info("Renaming " + fl.getName() + " to " + targ.getName() + " (" + targ.getParentFile().getAbsolutePath() + ").");
+				fl.renameTo(targ);
+				FileConfiguration stats = YamlConfiguration.loadConfiguration(targ);
+				List<?> namesO = stats.getList("known-names");
+				List<String> names = new ArrayList<String>();
+				for (Object o : namesO) {
+					names.add(o.toString());
+				}
+				if (!names.contains(name)) {
+					names.add(name);
+				}
+				stats.set("known-names", names);
+				try {
+					stats.save(targ);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public void onDisable() {
