@@ -133,6 +133,7 @@ public class UnknownPlayers extends JavaPlugin {
 	
 	/**
 	 * Get an offline player's UUID
+	 * MUST BE RUN ASYNCHRONOUSLY!
 	 * @param name The username
 	 * @return The UUID
 	 */
