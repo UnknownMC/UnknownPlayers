@@ -14,12 +14,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import com.mojang.api.profiles.HttpProfileRepository;
+import com.mojang.api.profiles.Profile;
+import com.mojang.api.profiles.ProfileCriteria;
+
 public class UnknownPlayers extends JavaPlugin {
 	
 	public static FileConfiguration config;
 	public static Logger log;
 	BukkitTask task;
 	public static File folder;
+	private static final HttpProfileRepository repository = new HttpProfileRepository();
 	
 	public void onEnable() {
 		getCommand("player").setExecutor(new CommandsHandler());
@@ -124,5 +129,30 @@ public class UnknownPlayers extends JavaPlugin {
 			}
 
 		}
+	}
+	
+	/**
+	 * Get an offline player's UUID
+	 * @param name The username
+	 * @return The UUID
+	 */
+	public static UUID getUUID(String name) {
+		 Profile[] profile = repository.findProfilesByCriteria(new ProfileCriteria(name, "minecraft"));
+		 if (profile.length != 1) {
+			 String uuids = "";
+			 for (Profile pr : profile) {
+				 if (uuids.length() != 0) {
+					 uuids = uuids + ", ";
+				 }
+				 uuids = uuids + pr.getId();
+			 }
+			 log.severe(name + " has " + profile.length + " UUIDs, expecting 1! " + uuids);
+			 return null;
+		 }
+		 String uuid = "";
+		 for (Profile pr : profile) {
+			 uuid = pr.getId();
+		 }
+		 return UUID.fromString(uuid);
 	}
 }
