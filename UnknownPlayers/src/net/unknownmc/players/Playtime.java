@@ -77,4 +77,28 @@ public class Playtime {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Saves the statistics to file
+	 */
+	public boolean saveStatistics() {
+		if (!data.exists()) {
+			UnknownPlayers.log.severe("What happened to playerdata/" + data.getName() + "?!");
+			UnknownPlayers.log.severe("Discarding unsaved data!");
+			return false;
+		}
+		long oldPlaytime = stats.getLong("playtime");
+		long join = stats.getLong("lastjoin");
+		long currentSession = System.currentTimeMillis() - join;
+		long newPlaytime = oldPlaytime + currentSession;
+		stats.set("playtime", newPlaytime);
+		try {
+			stats.save(data);
+			return true;
+		} catch (IOException ioe) {
+			UnknownPlayers.log.severe("Couldn't save " + player + "'s playtime!");
+			ioe.printStackTrace();
+			return false;
+		}
+	}
 }
