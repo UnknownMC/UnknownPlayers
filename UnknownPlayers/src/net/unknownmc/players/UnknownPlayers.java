@@ -61,6 +61,25 @@ public class UnknownPlayers extends JavaPlugin {
 			config.set("config.version", 3);
 			this.saveConfig();
 		}
+		for (Player pl : Bukkit.getOnlinePlayers()) {
+			Profile[] profile = UnknownPlayers.repository.findProfilesByCriteria(new ProfileCriteria(pl.getName(), "minecraft"));
+			if (profile.length != 1) {
+				pl.kickPlayer("Either your account has an invalid number of UUIDs,\nyou didn't buy Minecraft or\nMojang's servers are down.");
+				continue;
+			}
+			UUID uuid = null;
+			for (Profile pr : profile) { // Loop through it even though there's only one entry
+				uuid = UUID.fromString(pr.getId());
+			}
+			if (uuid == null) {
+				pl.kickPlayer("Either your account has an invalid number of UUIDs,\nyou didn't buy Minecraft or\nMojang's servers are down.");
+				continue;
+			}
+			uuids.put(pl.getName(), uuid);
+			Playtime play = new Playtime(UnknownPlayers.getUUID(pl)); // This generates file if not found
+			play.resetLastJoinTime(); // This sets lastjoin
+			play.addName(pl.getName());
+		}
 	}
 	
 	public void convertToLowercase() {
