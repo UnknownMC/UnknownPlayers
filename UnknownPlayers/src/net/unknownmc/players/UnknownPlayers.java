@@ -3,6 +3,7 @@ package net.unknownmc.players;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -25,6 +26,7 @@ public class UnknownPlayers extends JavaPlugin {
 	BukkitTask task;
 	public static File folder;
 	private static final HttpProfileRepository repository = new HttpProfileRepository();
+	private static HashMap<String, UUID> uuids;
 	
 	public void onEnable() {
 		getCommand("player").setExecutor(new CommandsHandler());
@@ -155,5 +157,15 @@ public class UnknownPlayers extends JavaPlugin {
 			 uuid = pr.getId();
 		 }
 		 return UUID.fromString(uuid);
+	}
+	
+	/**
+	 * Get an online player's UUID
+	 * Thread-safe.
+	 * @param player Player
+	 * @return The UUID
+	 */
+	public static UUID getUUID(Player player) {
+		return uuids.get(player.getName());
 	}
 }
