@@ -20,6 +20,7 @@ public class EvtListener implements Listener {
 	public void join (PlayerJoinEvent e) {
 		Playtime play = new Playtime(UnknownPlayers.getUUID(e.getPlayer())); // This generates file if not found
 		play.resetLastJoinTime(); // This sets lastjoin
+		play.addName(e.getPlayer().getName());
 	}
 	
 	@EventHandler
