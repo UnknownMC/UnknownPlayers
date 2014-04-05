@@ -81,7 +81,7 @@ public class UnknownPlayers extends JavaPlugin {
 			if (fl.isFile()) {
 				String name = fl.getName();
 				name = name.substring(0, name.length()-4); // trim the ".yml"
-				UUID uuid = UUID.fromString(""); // TODO
+				UUID uuid = getUUID(name);
 				File targ = new File(fl.getParentFile(), uuid.toString());
 				log.info("Renaming " + fl.getName() + " to " + targ.getName() + " (" + targ.getParentFile().getAbsolutePath() + ").");
 				fl.renameTo(targ);
