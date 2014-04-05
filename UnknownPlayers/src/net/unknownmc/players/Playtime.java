@@ -24,10 +24,19 @@ public class Playtime {
 		File folder = UnknownPlayers.folder;
 		String name = player + ".yml";
 		data = new File(folder, name);
+		boolean isNew = false;
 		if (!data.exists()) {
-			UnknownPlayers.log.severe(data.getAbsolutePath() + " (" + player + ") doesn't exist!");
-		} else {
-			stats = YamlConfiguration.loadConfiguration(data);
+			data.getParentFile().mkdirs();
+			try {
+				data.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			isNew = true;
+		}
+		stats = YamlConfiguration.loadConfiguration(data);
+		if (isNew) {
+			createEmptyConfig();
 		}
 	}
 	
@@ -104,5 +113,17 @@ public class Playtime {
 		long join = stats.getLong("lastjoin");
 		long currentSession = System.currentTimeMillis() - join;
 		return setPlayTime(currentSession + oldPlaytime);
+	}
+	
+	public boolean createEmptyConfig() {
+		try {
+			stats.set("firstjoin", System.currentTimeMillis());
+			stats.set("playtime", 0);
+			stats.save(data);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
