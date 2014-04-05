@@ -8,3 +8,5 @@ demote:
   - Moderator
   - Admin
   - Helper
+config:
+  version: 3
