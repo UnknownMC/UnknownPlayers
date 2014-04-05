@@ -20,7 +20,7 @@ public class PromotePlayers extends BukkitRunnable {
     public void run() {
     	for (Player pl : Bukkit.getOnlinePlayers()) {
     		if (!pl.hasPermission("unknownmc.player")) {
-    			Playtime play = new Playtime(pl.getName());
+    			Playtime play = new Playtime(UnknownPlayers.getUUID(pl));
 				long playtime = play.getPlayTime();
 				long current = System.currentTimeMillis() - play.getLastJoinTime();
 				playtime = playtime + current;

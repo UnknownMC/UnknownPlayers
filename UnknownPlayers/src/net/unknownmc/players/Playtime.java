@@ -2,6 +2,7 @@ package net.unknownmc.players;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -9,7 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Playtime {
 	
-	String player;
+	UUID player;
 	long time;
 	File data;
 	FileConfiguration stats;
@@ -18,10 +19,10 @@ public class Playtime {
 	 * The method to be used for getting/setting a player's play time configuration.
 	 * @param pl The player name
 	 */
-	public Playtime(String pl) {
-		player = pl;
+	public Playtime(UUID uuid) {
+		player = uuid;
 		File folder = UnknownPlayers.folder;
-		String name = player.toLowerCase() + ".yml";
+		String name = player + ".yml";
 		data = new File(folder, name);
 		if (!data.exists()) {
 			UnknownPlayers.log.severe(data.getAbsolutePath() + " (" + player + ") doesn't exist!");
