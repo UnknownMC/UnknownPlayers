@@ -23,7 +23,7 @@ public class EvtListener implements Listener {
 	@EventHandler
 	public void join (PlayerJoinEvent e) {
 		File folder = UnknownPlayers.folder;
-		String name = e.getPlayer().getName().toLowerCase() + ".yml";
+		String name = UnknownPlayers.getUUID(e.getPlayer()) + ".yml";
 		File confF = new File(folder, name);
 		boolean newbie = false;
 		if (!confF.exists()) {
@@ -55,10 +55,10 @@ public class EvtListener implements Listener {
 	public void leave (PlayerQuitEvent e) {
 		//if editing this, update UnknownPlayers.onDisable()
 		File folder = UnknownPlayers.folder;
-		String name = e.getPlayer().getName().toLowerCase() + ".yml";
+		String name = UnknownPlayers.getUUID(e.getPlayer()) + ".yml";
 		File confF = new File(folder, name);
 		if (!confF.exists()) {
-			UnknownPlayers.log.severe("What happened to playerdata/" + e.getPlayer().getName().toLowerCase() + ".yml?!");
+			UnknownPlayers.log.severe("What happened to playerdata/" + name + "?!");
 			UnknownPlayers.log.severe("Discarding unsaved data!");
 			return;
 		}

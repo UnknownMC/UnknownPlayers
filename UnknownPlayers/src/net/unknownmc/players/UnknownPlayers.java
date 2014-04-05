@@ -110,10 +110,10 @@ public class UnknownPlayers extends JavaPlugin {
 		//if editing, update EvtListener.leave()
 		for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
 			File folder = UnknownPlayers.folder;
-			String name = pl.getName().toLowerCase() + ".yml";
+			String name = getUUID(pl) + ".yml";
 			File confF = new File(folder, name);
 			if (!confF.exists()) {
-				UnknownPlayers.log.severe("What happened to playerdata/" + pl.getName().toLowerCase() + "?!");
+				UnknownPlayers.log.severe("What happened to playerdata/" + name + "?!");
 				UnknownPlayers.log.severe("Discarding unsaved data!");
 				return;
 			}
