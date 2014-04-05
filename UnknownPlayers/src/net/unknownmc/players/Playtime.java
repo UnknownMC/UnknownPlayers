@@ -82,6 +82,7 @@ public class Playtime {
 	
 	/**
 	 * Resets the player's last join time, setting it to the current time. Call this in the onjoin or after saving the play time
+	 * @return True on success, false on fail
 	 */
 	public boolean resetLastJoinTime() {
 		if (stats == null) {
@@ -99,6 +100,7 @@ public class Playtime {
 	
 	/**
 	 * Saves the statistics to file
+	 * @return True on success, false on fail
 	 */
 	public boolean saveStatistics() {
 		if (stats == null) {
@@ -115,6 +117,10 @@ public class Playtime {
 		return setPlayTime(currentSession + oldPlaytime);
 	}
 	
+	/**
+	 * Fills the configuration with default values.
+	 * @return True on success, false on fail
+	 */
 	public boolean createEmptyConfig() {
 		try {
 			stats.set("firstjoin", System.currentTimeMillis());
