@@ -109,28 +109,10 @@ public class UnknownPlayers extends JavaPlugin {
 		
 		//if editing, update EvtListener.leave()
 		for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
-			File folder = UnknownPlayers.folder;
-			String name = getUUID(pl) + ".yml";
-			File confF = new File(folder, name);
-			if (!confF.exists()) {
-				UnknownPlayers.log.severe("What happened to playerdata/" + name + "?!");
-				UnknownPlayers.log.severe("Discarding unsaved data!");
-				return;
-			}
-			FileConfiguration stats = YamlConfiguration.loadConfiguration(confF);
-			long oldPlaytime = stats.getLong("playtime");
-			long join = stats.getLong("lastjoin");
-			long currentSession = System.currentTimeMillis() - join;
-			long newPlaytime = oldPlaytime + currentSession;
-			stats.set("playtime", newPlaytime);
-			try {
-				stats.save(confF);
-			} catch (IOException ioe) {
-				UnknownPlayers.log.severe("Couldn't save " + pl.getName() + "'s playtime!");
-				ioe.printStackTrace();
-			}
-
+			Playtime play = new Playtime(getUUID(pl));
+			play.saveStatistics();
 		}
+		uuids.clear();
 	}
 	
 	/**
