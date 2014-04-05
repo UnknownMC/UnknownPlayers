@@ -58,6 +58,9 @@ public class Playtime {
 	 * @param time The player's new play time
 	 */
 	public boolean setPlayTime(long time) {
+		if (stats == null) {
+			return false;
+		}
 		stats.set("playtime", time);
 		try {
 			stats.save(data);
@@ -71,12 +74,17 @@ public class Playtime {
 	/**
 	 * Resets the player's last join time, setting it to the current time. Call this in the onjoin or after saving the play time
 	 */
-	public void resetLastJoinTime() {
+	public boolean resetLastJoinTime() {
+		if (stats == null) {
+			return false;
+		}
 		stats.set("lastjoin", System.currentTimeMillis());
 		try {
 			stats.save(data);
+			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 	
@@ -84,6 +92,9 @@ public class Playtime {
 	 * Saves the statistics to file
 	 */
 	public boolean saveStatistics() {
+		if (stats == null) {
+			return false;
+		}
 		if (!data.exists()) {
 			UnknownPlayers.log.severe("What happened to playerdata/" + data.getName() + "?!");
 			UnknownPlayers.log.severe("Discarding unsaved data!");
