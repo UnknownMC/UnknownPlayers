@@ -25,8 +25,8 @@ public class UnknownPlayers extends JavaPlugin {
 	public static Logger log;
 	BukkitTask task;
 	public static File folder;
-	private static final HttpProfileRepository repository = new HttpProfileRepository();
-	private static HashMap<String, UUID> uuids;
+	public static final HttpProfileRepository repository = new HttpProfileRepository();
+	public static HashMap<String, UUID> uuids;
 	
 	public void onEnable() {
 		getCommand("player").setExecutor(new CommandsHandler());
