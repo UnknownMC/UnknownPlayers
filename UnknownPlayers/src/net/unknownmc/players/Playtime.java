@@ -57,12 +57,14 @@ public class Playtime {
 	 * Sets the player's play time, overwriting the current value.
 	 * @param time The player's new play time
 	 */
-	public void setPlayTime(long time) {
+	public boolean setPlayTime(long time) {
 		stats.set("playtime", time);
 		try {
 			stats.save(data);
+			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 	
@@ -90,15 +92,6 @@ public class Playtime {
 		long oldPlaytime = stats.getLong("playtime");
 		long join = stats.getLong("lastjoin");
 		long currentSession = System.currentTimeMillis() - join;
-		long newPlaytime = oldPlaytime + currentSession;
-		stats.set("playtime", newPlaytime);
-		try {
-			stats.save(data);
-			return true;
-		} catch (IOException ioe) {
-			UnknownPlayers.log.severe("Couldn't save " + player + "'s playtime!");
-			ioe.printStackTrace();
-			return false;
-		}
+		return setPlayTime(currentSession + oldPlaytime);
 	}
 }
