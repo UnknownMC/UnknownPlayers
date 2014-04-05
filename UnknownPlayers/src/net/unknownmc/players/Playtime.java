@@ -2,6 +2,8 @@ package net.unknownmc.players;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -131,5 +133,34 @@ public class Playtime {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	/**
+	 * Adds an username to list of known names.
+	 * @param name The name
+	 * @return False on fail, true on success. If name already exists, will fail silently (reports true)
+	 */
+	public boolean addName(String name) {
+		List<String> names = getNames();
+		if (!names.contains(name)) {
+			names.add(name);
+			stats.set("known-names", names);
+			try {
+				stats.save(data);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public List<String> getNames() {
+		List<?> objects = stats.getList("known-names");
+		List<String> names = new ArrayList<String>();
+		for (Object o : objects) {
+			names.add(o.toString());
+		}
+		return names;
 	}
 }
