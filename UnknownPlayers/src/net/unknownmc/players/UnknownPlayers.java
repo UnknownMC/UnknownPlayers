@@ -105,8 +105,10 @@ public class UnknownPlayers extends JavaPlugin {
 				FileConfiguration stats = YamlConfiguration.loadConfiguration(targ);
 				List<?> namesO = stats.getList("known-names");
 				List<String> names = new ArrayList<String>();
-				for (Object o : namesO) {
-					names.add(o.toString());
+				if (namesO.size() > 0) {
+					for (Object o : namesO) {
+						names.add(o.toString());
+					}
 				}
 				if (!names.contains(name)) {
 					names.add(name);
