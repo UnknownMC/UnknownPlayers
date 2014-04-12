@@ -157,9 +157,11 @@ public class Playtime {
 	public List<String> getNames() {
 		List<?> objects = stats.getList("known-names");
 		List<String> names = new ArrayList<String>();
-		if (objects.size() > 0) {
-			for (Object o : objects) {
-				names.add(o.toString());
+		if (objects != null) {
+			if (objects.size() > 0) {
+				for (Object o : objects) {
+					names.add(o.toString());
+				}
 			}
 		}
 		return names;

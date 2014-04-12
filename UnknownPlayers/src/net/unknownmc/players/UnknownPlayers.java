@@ -97,7 +97,9 @@ public class UnknownPlayers extends JavaPlugin {
 		for (File fl : folder.listFiles()) {
 			if (fl.isFile()) {
 				String name = fl.getName();
+				System.out.println(name);
 				name = name.substring(0, name.length()-4); // trim the ".yml"
+				System.out.println(name);
 				String uuid = getUUID(name);
 				File targ = new File(fl.getParentFile(), uuid + ".yml");
 				log.info("Renaming " + fl.getName() + " to " + targ.getName() + " (" + targ.getParentFile().getAbsolutePath() + ").");
@@ -105,9 +107,11 @@ public class UnknownPlayers extends JavaPlugin {
 				FileConfiguration stats = YamlConfiguration.loadConfiguration(targ);
 				List<?> namesO = stats.getList("known-names");
 				List<String> names = new ArrayList<String>();
-				if (namesO.size() > 0) {
-					for (Object o : namesO) {
-						names.add(o.toString());
+				if (namesO != null) {
+					if (namesO.size() > 0) {
+						for (Object o : namesO) {
+							names.add(o.toString());
+						}
 					}
 				}
 				if (!names.contains(name)) {
