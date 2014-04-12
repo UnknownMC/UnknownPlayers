@@ -1,18 +1,15 @@
 package net.unknownmc.players;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class CommandsHandler implements CommandExecutor {
 
@@ -54,54 +51,23 @@ public class CommandsHandler implements CommandExecutor {
 				return true;
 			}
 			
-			File folder = UnknownPlayers.folder;
-			String name = player.toLowerCase() + ".yml";
-			File confF = new File(folder, name);
-			if (!confF.exists()) {
-				sender.sendMessage(ChatColor.RED + player + " has never connected to the server yet.");
-				return true;
-			}
+			final String targ = player;
+			final CommandSender send = sender;
 			
-			FileConfiguration stats = YamlConfiguration.loadConfiguration(confF);
-			
-			sender.sendMessage(ChatColor.GOLD + "=======-------> " + ChatColor.YELLOW + player + ChatColor.GOLD + " <-------=======");
-			Player onlineplayer = Bukkit.getPlayerExact(player);
-			boolean online = false;
-			if ((onlineplayer != null) && (onlineplayer.isOnline())) {
-				//sender.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.RED + "TIP" + ChatColor.DARK_RED + "] " + ChatColor.GREEN + player + " is currently online, use " + ChatColor.DARK_GREEN + "/whois " + player + ChatColor.GREEN + " to see more information about them.");
-				online = true;
-			}
-			long playtime = stats.getLong("playtime");
-			if (online) {
-				long current = System.currentTimeMillis() - stats.getLong("lastjoin");
-				playtime = playtime + current;
-			}
-			long second = (playtime / 1000) % 60;
-			long minute = (playtime / (1000 * 60)) % 60;
-			long hour = (playtime / (1000 * 60 * 60)) % 24;
-			long days = (playtime / (1000 * 60 * 60 * 24));
-	
-			String time = String.format(ChatColor.GOLD + "%d" + ChatColor.YELLOW + " days " + ChatColor.GOLD + "%d" + ChatColor.YELLOW + " hours " + ChatColor.GOLD + "%d" + ChatColor.YELLOW + " minutes " + ChatColor.GOLD + "%d" + ChatColor.YELLOW + " seconds", days, hour, minute, second);
-	
-			sender.sendMessage(ChatColor.GREEN + "Play time: " + ChatColor.DARK_GREEN + time);
-			long reqtime = UnknownPlayers.config.getLong("rankup.time") * 60 * 1000;
-			if (playtime < reqtime) {
-				long timeuntil = reqtime - playtime;
-				long plS = (timeuntil / 1000) % 60;
-				long plM = (timeuntil / (1000 * 60)) % 60;
-				long plH = (timeuntil / (1000 * 60 * 60));
-				String timeplayer = String.format(ChatColor.GOLD + "%d" + ChatColor.YELLOW + " hours " + ChatColor.GOLD + "%d" + ChatColor.YELLOW + " minutes " + ChatColor.GOLD + "%d" + ChatColor.YELLOW + " seconds", plH, plM, plS);
-				sender.sendMessage(ChatColor.GREEN + "Time until Player: " + timeplayer);
-			}
-	//		sender.sendMessage(ChatColor.GREEN + "Play time: " + ChatColor.DARK_GREEN + time);
-			Calendar cal = Calendar.getInstance();
-			cal.setTimeInMillis(stats.getLong("firstjoin"));
-			String first = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss 'UTC'Z").format(cal.getTime());
-			sender.sendMessage(ChatColor.GREEN + "First visit: " + ChatColor.YELLOW + first);
-			if (sender.hasPermission("unknownmc.playtime.detailed")) {
-				OfflinePlayer op = Bukkit.getServer().getOfflinePlayer("");
-				boolean ban = op.isBanned();
-				sender.sendMessage(ChatColor.GREEN + "Is banned: " + bool2Str(ban));
+			Player target = Bukkit.getPlayerExact(targ);
+			if (target != null) {
+				String uuid = UnknownPlayers.getUUID(target);
+				Playtime pl = new Playtime(uuid);
+				sendPlaytime(pl, send);
+			} else {
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						String uuid = UnknownPlayers.getUUID(targ);
+						Playtime pl = new Playtime(uuid);
+						sendPlaytime(pl, send);
+					}
+				};
 			}
 			return true;
 		} else if (cmd.getName().equalsIgnoreCase("demote")) {
@@ -132,4 +98,45 @@ public class CommandsHandler implements CommandExecutor {
 		return str;
 	}
 
+	/**
+	 * Send requested playtime information
+	 * @param playtime The instance of Playtime
+	 * @param sender The requester
+	 */
+	public void sendPlaytime(Playtime play, CommandSender sender) {
+		long playtime = play.getPlayTime();
+		Player player = Bukkit.getPlayer(play.getUUID());
+		if (player != null) {
+			if (player.isOnline()) {
+				playtime = (playtime) + (System.currentTimeMillis() - play.getLastJoinTime());
+			}
+		}
+		long second = (playtime / 1000) % 60;
+		long minute = (playtime / (1000 * 60)) % 60;
+		long hour = (playtime / (1000 * 60 * 60)) % 24;
+		long days = (playtime / (1000 * 60 * 60 * 24));
+		String time = String.format(ChatColor.GOLD + "%d" + ChatColor.YELLOW + " days " + ChatColor.GOLD + "%d" + ChatColor.YELLOW + " hours " + ChatColor.GOLD + "%d" + ChatColor.YELLOW + " minutes " + ChatColor.GOLD + "%d" + ChatColor.YELLOW + " seconds", days, hour, minute, second);
+		sender.sendMessage(ChatColor.GREEN + "Play time: " + ChatColor.DARK_GREEN + time);
+		long reqtime = UnknownPlayers.config.getLong("rankup.time") * 60 * 1000;
+		if (playtime < reqtime) {
+			long timeuntil = reqtime - playtime;
+			long plS = (timeuntil / 1000) % 60;
+			long plM = (timeuntil / (1000 * 60)) % 60;
+			long plH = (timeuntil / (1000 * 60 * 60));
+			String timeplayer = String.format(ChatColor.GOLD + "%d" + ChatColor.YELLOW + " hours " + ChatColor.GOLD + "%d" + ChatColor.YELLOW + " minutes " + ChatColor.GOLD + "%d" + ChatColor.YELLOW + " seconds", plH, plM, plS);
+			sender.sendMessage(ChatColor.GREEN + "Time until Player: " + timeplayer);
+		}
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(play.getFirstJoin());
+		String first = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss 'UTC'Z").format(cal.getTime());
+		sender.sendMessage(ChatColor.GREEN + "First visit: " + ChatColor.YELLOW + first);
+		String usernames = "";
+		for (String name : play.getNames()) {
+			if (usernames.length() != 0) {
+				usernames = usernames + ", ";
+			}
+			usernames = usernames + name;
+		}
+		sender.sendMessage(ChatColor.GREEN + "Known usernames: " + ChatColor.YELLOW + usernames);
+	}
 }
