@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -62,7 +63,7 @@ public class UnknownPlayers extends JavaPlugin {
 		for (Player pl : Bukkit.getOnlinePlayers()) {
 			Profile[] profile = UnknownPlayers.repository.findProfilesByCriteria(new ProfileCriteria(pl.getName(), "minecraft"));
 			if (profile.length != 1) {
-				pl.kickPlayer("Either your account has an invalid number of UUIDs,\nyou didn't buy Minecraft or\nMojang's servers are down.");
+				pl.kickPlayer(ChatColor.RED + "Error connecting to server: couldn't get your UUID\nAre Mojang's login servers down?");
 				continue;
 			}
 			String uuid = null;
@@ -70,7 +71,7 @@ public class UnknownPlayers extends JavaPlugin {
 				uuid = pr.getId();
 			}
 			if (uuid == null) {
-				pl.kickPlayer("Either your account has an invalid number of UUIDs,\nyou didn't buy Minecraft or\nMojang's servers are down.");
+				pl.kickPlayer(ChatColor.RED + "Error connecting to server: couldn't get your UUID\nAre Mojang's login servers down?");
 				continue;
 			}
 			uuids.put(pl.getName(), uuid);

@@ -1,5 +1,6 @@
 package net.unknownmc.players;
 
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -33,10 +34,9 @@ public class EvtListener implements Listener {
 	public void prelogin (AsyncPlayerPreLoginEvent e) {
 		Profile[] profile = UnknownPlayers.repository.findProfilesByCriteria(new ProfileCriteria(e.getName(), "minecraft"));
 		if (profile.length != 1) {
-			e.disallow(Result.KICK_OTHER, "Either your account has an invalid number of UUIDs,\nyou didn't buy Minecraft or\nMojang's servers are down.");
+			e.disallow(Result.KICK_OTHER, ChatColor.RED + "Error connecting to server: couldn't get your UUID\nAre Mojang's login servers down?");
 			e.setLoginResult(Result.KICK_OTHER);
-			e.setKickMessage("Either your account has an invalid number of UUIDs,\nyou didn't buy Minecraft or\nMojang's servers are down.");
-			System.out.println("Invalid profile length - " + profile.length + " given, expecting 1 for " + e.getName());
+			e.setKickMessage(ChatColor.RED + "Error connecting to server: couldn't get your UUID\nAre Mojang's login servers down?");
 			return;
 		}
 		String uuid = null;
@@ -44,10 +44,9 @@ public class EvtListener implements Listener {
 			uuid = pr.getId();
 		}
 		if (uuid == null) {
-			e.disallow(Result.KICK_OTHER, "Either your account has an invalid number of UUIDs,\nyou didn't buy Minecraft or\nMojang's servers are down.");
+			e.disallow(Result.KICK_OTHER, ChatColor.RED + "Error connecting to server: couldn't get your UUID\nAre Mojang's login servers down?");
 			e.setLoginResult(Result.KICK_OTHER);
-			e.setKickMessage("Either your account has an invalid number of UUIDs,\nyou didn't buy Minecraft or\nMojang's servers are down.");
-			System.out.println("uuid == null");
+			e.setKickMessage(ChatColor.RED + "Error connecting to server: couldn't get your UUID\nAre Mojang's login servers down?");
 			return;
 		}
 		UnknownPlayers.uuids.put(e.getName(), uuid);
