@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -99,8 +98,8 @@ public class UnknownPlayers extends JavaPlugin {
 			if (fl.isFile()) {
 				String name = fl.getName();
 				name = name.substring(0, name.length()-4); // trim the ".yml"
-				UUID uuid = getUUID(name);
-				File targ = new File(fl.getParentFile(), uuid.toString());
+				String uuid = getUUID(name);
+				File targ = new File(fl.getParentFile(), uuid + ".yml");
 				log.info("Renaming " + fl.getName() + " to " + targ.getName() + " (" + targ.getParentFile().getAbsolutePath() + ").");
 				fl.renameTo(targ);
 				FileConfiguration stats = YamlConfiguration.loadConfiguration(targ);
@@ -139,7 +138,7 @@ public class UnknownPlayers extends JavaPlugin {
 	 * @param name The username
 	 * @return The UUID
 	 */
-	public static UUID getUUID(String name) {
+	public static String getUUID(String name) {
 		 Profile[] profile = repository.findProfilesByCriteria(new ProfileCriteria(name, "minecraft"));
 		 if (profile.length != 1) {
 			 String uuids = "";
@@ -156,7 +155,7 @@ public class UnknownPlayers extends JavaPlugin {
 		 for (Profile pr : profile) {
 			 uuid = pr.getId();
 		 }
-		 return UUID.fromString(uuid);
+		 return uuid;
 	}
 	
 	/**
