@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,7 +11,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Playtime {
 	
-	UUID player;
+	String player;
 	long time;
 	File data;
 	FileConfiguration stats;
@@ -21,7 +20,7 @@ public class Playtime {
 	 * The method to be used for getting/setting a player's play time configuration.
 	 * @param pl The player name
 	 */
-	public Playtime(UUID uuid) {
+	public Playtime(String uuid) {
 		player = uuid;
 		File folder = UnknownPlayers.folder;
 		String name = player + ".yml";

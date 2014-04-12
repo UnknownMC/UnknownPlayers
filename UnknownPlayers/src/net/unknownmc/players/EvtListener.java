@@ -1,7 +1,5 @@
 package net.unknownmc.players;
 
-import java.util.UUID;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -38,16 +36,18 @@ public class EvtListener implements Listener {
 			e.disallow(Result.KICK_OTHER, "Either your account has an invalid number of UUIDs,\nyou didn't buy Minecraft or\nMojang's servers are down.");
 			e.setLoginResult(Result.KICK_OTHER);
 			e.setKickMessage("Either your account has an invalid number of UUIDs,\nyou didn't buy Minecraft or\nMojang's servers are down.");
+			System.out.println("Invalid profile length - " + profile.length + " given, expecting 1 for " + e.getName());
 			return;
 		}
-		UUID uuid = null;
+		String uuid = null;
 		for (Profile pr : profile) { // Loop through it even though there's only one entry
-			uuid = UUID.fromString(pr.getId());
+			uuid = pr.getId();
 		}
 		if (uuid == null) {
 			e.disallow(Result.KICK_OTHER, "Either your account has an invalid number of UUIDs,\nyou didn't buy Minecraft or\nMojang's servers are down.");
 			e.setLoginResult(Result.KICK_OTHER);
 			e.setKickMessage("Either your account has an invalid number of UUIDs,\nyou didn't buy Minecraft or\nMojang's servers are down.");
+			System.out.println("uuid == null");
 			return;
 		}
 		UnknownPlayers.uuids.put(e.getName(), uuid);

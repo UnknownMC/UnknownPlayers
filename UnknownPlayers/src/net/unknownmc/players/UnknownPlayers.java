@@ -26,12 +26,12 @@ public class UnknownPlayers extends JavaPlugin {
 	BukkitTask task;
 	public static File folder;
 	public static final HttpProfileRepository repository = new HttpProfileRepository();
-	public static HashMap<String, UUID> uuids;
+	public static HashMap<String, String> uuids;
 	
 	public void onEnable() {
 		getCommand("player").setExecutor(new CommandsHandler());
 		getCommand("demote").setExecutor(new CommandsHandler());
-		uuids = new HashMap<String, UUID>();
+		uuids = new HashMap<String, String>();
 				
 		folder = new File(getDataFolder(), "players/");
 		if (!folder.exists()) {
@@ -66,9 +66,9 @@ public class UnknownPlayers extends JavaPlugin {
 				pl.kickPlayer("Either your account has an invalid number of UUIDs,\nyou didn't buy Minecraft or\nMojang's servers are down.");
 				continue;
 			}
-			UUID uuid = null;
+			String uuid = null;
 			for (Profile pr : profile) { // Loop through it even though there's only one entry
-				uuid = UUID.fromString(pr.getId());
+				uuid = pr.getId();
 			}
 			if (uuid == null) {
 				pl.kickPlayer("Either your account has an invalid number of UUIDs,\nyou didn't buy Minecraft or\nMojang's servers are down.");
@@ -165,7 +165,7 @@ public class UnknownPlayers extends JavaPlugin {
 	 * @param player Player
 	 * @return The UUID
 	 */
-	public static UUID getUUID(Player player) {
+	public static String getUUID(Player player) {
 		return uuids.get(player.getName());
 	}
 }
