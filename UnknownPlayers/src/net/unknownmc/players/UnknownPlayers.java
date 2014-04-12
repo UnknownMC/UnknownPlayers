@@ -101,6 +101,10 @@ public class UnknownPlayers extends JavaPlugin {
 				name = name.substring(0, name.length()-4); // trim the ".yml"
 				System.out.println(name);
 				String uuid = getUUID(name);
+				if (uuid == null) {
+					log.warning("Skipping " + name + ", UUID is null");
+					continue;
+				}
 				File targ = new File(fl.getParentFile(), uuid + ".yml");
 				log.info("Renaming " + fl.getName() + " to " + targ.getName() + " (" + targ.getParentFile().getAbsolutePath() + ").");
 				fl.renameTo(targ);
