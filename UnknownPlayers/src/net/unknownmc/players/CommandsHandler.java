@@ -87,17 +87,6 @@ public class CommandsHandler implements CommandExecutor {
 		return false;
 	}
 	
-	public String bool2Str(boolean bool) {
-		String str = "";
-		if (bool) {
-			str = ChatColor.DARK_GREEN + "Yes";
-		}
-		if (!bool) {
-			str = ChatColor.DARK_RED + "No";
-		}
-		return str;
-	}
-
 	/**
 	 * Send requested playtime information
 	 * @param playtime The instance of Playtime
