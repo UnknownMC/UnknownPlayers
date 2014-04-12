@@ -174,4 +174,8 @@ public class Playtime {
 	public String getUUID() {
 		return player;
 	}
+	
+	public long getFirstJoin() {
+		return stats.getLong("firstjoin");
+	}
 }
