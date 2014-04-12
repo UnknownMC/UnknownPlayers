@@ -166,4 +166,12 @@ public class Playtime {
 		}
 		return names;
 	}
+	
+	/**
+	 * Get the UUID used.
+	 * @return The UUID
+	 */
+	public String getUUID() {
+		return player;
+	}
 }
