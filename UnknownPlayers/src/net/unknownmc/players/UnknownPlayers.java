@@ -94,39 +94,61 @@ public class UnknownPlayers extends JavaPlugin {
 	
 	public void convertToUUID() {
 		log.info("Converting all old player files to use the UUIDs, this one time process will delay the start up time this one time!");
+		List<String> names = new ArrayList<String>();
+		int processed = 0;
 		for (File fl : folder.listFiles()) {
-			if (fl.isFile()) {
-				String name = fl.getName();
-				name = name.substring(0, name.length()-4); // trim the ".yml"
-				String uuid = getUUID(name);
-				if (uuid == null) {
-					log.warning("Skipping " + name + ", UUID is null");
-					continue;
-				}
-				File targ = new File(fl.getParentFile(), uuid + ".yml");
-				log.info("Renaming " + fl.getName() + " to " + targ.getName() + " (" + targ.getParentFile().getAbsolutePath() + ").");
-				fl.renameTo(targ);
-				FileConfiguration stats = YamlConfiguration.loadConfiguration(targ);
-				List<?> namesO = stats.getList("known-names");
-				List<String> names = new ArrayList<String>();
-				if (namesO != null) {
-					if (namesO.size() > 0) {
-						for (Object o : namesO) {
-							names.add(o.toString());
-						}
+			if (!fl.isFile()) {
+				continue;
+			}
+			if (fl.getName().startsWith("uuid-")) {
+				continue;
+			}
+			String name = fl.getName();
+			name = name.substring(0, name.length()-4); // trim the ".yml"
+			names.add(name);
+			processed++;
+			if (processed >= 100) {
+				break;
+			}
+		}
+		if (processed == 0) {
+			log.info("Conversion done, no more files to convert!");
+			return;
+		}
+		log.info("Asking Mojang for 100 players' UUIDS, might take a while?");
+		Profile[] profiles = repository.findProfilesByCriteria(names.toArray(new String[100]));
+		log.info("Got a response from Mojang, starting renaming of the 100 batch");
+		for (Profile pr : profiles) {
+			if (pr.getId() == null) {
+				log.warning("Skipping " + pr.getName() + ", UUID is null");
+				continue;
+			}
+			File in = new File(folder, pr.getName() + ".yml");
+			File out = new File(folder, "uuid-" + pr.getId() + ".yml");
+			log.info("About to rename " + in.getName() + " to " + out.getName());
+			in.renameTo(out);
+			// Now add the known names
+			FileConfiguration stats = YamlConfiguration.loadConfiguration(out);
+			List<?> namesO = stats.getList("known-names");
+			List<String> knames = new ArrayList<String>();
+			if (namesO != null) {
+				if (namesO.size() > 0) {
+					for (Object o : namesO) {
+						knames.add(o.toString());
 					}
 				}
-				if (!names.contains(name)) {
-					names.add(name);
-				}
-				stats.set("known-names", names);
+			}
+			if (!names.contains(pr.getName())) {
+				knames.add(pr.getName());
+				stats.set("known-names", knames);
 				try {
-					stats.save(targ);
-				} catch (IOException e) {
-					e.printStackTrace();
+					stats.save(out);
+				} catch (IOException ioe) {
+					ioe.printStackTrace();
 				}
 			}
 		}
+		convertToUUID(); // No stackoverflow pl0x, we have to do this for every 100 players... so with 5k players, that's 50 times :(
 	}
 	
 	public void onDisable() {
