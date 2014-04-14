@@ -23,7 +23,7 @@ public class Playtime {
 	public Playtime(String uuid) {
 		player = uuid;
 		File folder = UnknownPlayers.folder;
-		String name = player + ".yml";
+		String name = "uuid-" + player + ".yml";
 		data = new File(folder, name);
 		boolean isNew = false;
 		if (!data.exists()) {
