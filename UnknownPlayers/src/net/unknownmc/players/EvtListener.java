@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.mojang.api.profiles.Profile;
-import com.mojang.api.profiles.ProfileCriteria;
 
 public class EvtListener implements Listener {
 	
@@ -32,7 +31,7 @@ public class EvtListener implements Listener {
 	
 	@EventHandler
 	public void prelogin (AsyncPlayerPreLoginEvent e) {
-		Profile[] profile = UnknownPlayers.repository.findProfilesByCriteria(new ProfileCriteria(e.getName(), "minecraft"));
+		Profile[] profile = UnknownPlayers.repository.findProfilesByCriteria(e.getName());
 		if (profile.length != 1) {
 			e.disallow(Result.KICK_OTHER, ChatColor.RED + "Error connecting to server: couldn't get your UUID\nAre Mojang's login servers down?");
 			e.setLoginResult(Result.KICK_OTHER);

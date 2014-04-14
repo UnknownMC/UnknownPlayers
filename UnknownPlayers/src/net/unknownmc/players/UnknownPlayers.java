@@ -17,7 +17,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.mojang.api.profiles.HttpProfileRepository;
 import com.mojang.api.profiles.Profile;
-import com.mojang.api.profiles.ProfileCriteria;
 
 public class UnknownPlayers extends JavaPlugin {
 	
@@ -25,7 +24,7 @@ public class UnknownPlayers extends JavaPlugin {
 	public static Logger log;
 	BukkitTask task;
 	public static File folder;
-	public static final HttpProfileRepository repository = new HttpProfileRepository();
+	public static final HttpProfileRepository repository = new HttpProfileRepository("minecraft");
 	public static HashMap<String, String> uuids;
 	
 	public void onEnable() {
@@ -61,7 +60,7 @@ public class UnknownPlayers extends JavaPlugin {
 			this.saveConfig();
 		}
 		for (Player pl : Bukkit.getOnlinePlayers()) {
-			Profile[] profile = UnknownPlayers.repository.findProfilesByCriteria(new ProfileCriteria(pl.getName(), "minecraft"));
+			Profile[] profile = UnknownPlayers.repository.findProfilesByCriteria(pl.getName());
 			if (profile.length != 1) {
 				pl.kickPlayer(ChatColor.RED + "Error connecting to server: couldn't get your UUID\nAre Mojang's login servers down?");
 				continue;
@@ -150,7 +149,7 @@ public class UnknownPlayers extends JavaPlugin {
 	 * @return The UUID
 	 */
 	public static String getUUID(String name) {
-		 Profile[] profile = repository.findProfilesByCriteria(new ProfileCriteria(name, "minecraft"));
+		 Profile[] profile = repository.findProfilesByCriteria(name);
 		 if (profile.length != 1) {
 			 String uuids = "";
 			 for (Profile pr : profile) {
