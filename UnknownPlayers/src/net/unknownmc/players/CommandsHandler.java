@@ -68,7 +68,7 @@ public class CommandsHandler implements CommandExecutor {
 						Playtime pl = new Playtime(uuid);
 						sendPlaytime(pl, send);
 					}
-				};
+				}.runTaskAsynchronously(Bukkit.getServer().getPluginManager().getPlugin("UnknownPlayers"));
 			}
 			return true;
 		} else if (cmd.getName().equalsIgnoreCase("demote")) {
