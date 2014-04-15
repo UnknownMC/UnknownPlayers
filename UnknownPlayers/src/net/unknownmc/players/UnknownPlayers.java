@@ -135,7 +135,10 @@ public class UnknownPlayers extends JavaPlugin {
 			File in = new File(folder, pr.getName() + ".yml");
 			File out = new File(folder, "uuid-" + pr.getId() + ".yml");
 			log.info("About to rename " + in.getName() + " to " + out.getName());
-			in.renameTo(out);
+			if (!in.renameTo(out)) {
+				log.warning("Failed to rename " + in.getAbsolutePath() + " to " + out.getAbsolutePath());
+				continue;
+			}
 			// Now add the known names
 			FileConfiguration stats = YamlConfiguration.loadConfiguration(out);
 			List<?> namesO = stats.getList("known-names");
