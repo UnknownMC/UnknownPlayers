@@ -1,6 +1,6 @@
 name: UnknownPlayers
 author: MrEinStain
-version: 1.2
+version: 2.0
 main: net.unknownmc.players.UnknownPlayers
 commands:
   player:
@@ -10,9 +10,6 @@ commands:
   demote:
     description: Demote a staff member.
     permissions: unknownmc.demote
-  topplayers:
-    description: Top play times
-    permissions: derp.herp
 permissions:
   unknownmc.playtime:
     default: true
@@ -20,9 +17,5 @@ permissions:
     default: op
   unknownmc.player:
     default: false
-  unknownmc.playtime.detailed:
-    default: op
   unknownmc.demote:
     default: op
-  derp.herp:
-    default: false
