@@ -132,7 +132,7 @@ public class UnknownPlayers extends JavaPlugin {
 				log.warning("Skipping " + pr.getName() + ", UUID is null");
 				continue;
 			}
-			File in = new File(folder, pr.getName() + ".yml");
+			File in = new File(folder, pr.getName().toLowerCase() + ".yml");
 			File out = new File(folder, "uuid-" + pr.getId() + ".yml");
 			log.info("About to rename " + in.getName() + " to " + out.getName());
 			if (!in.renameTo(out)) {
