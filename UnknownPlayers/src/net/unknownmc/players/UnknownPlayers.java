@@ -123,6 +123,10 @@ public class UnknownPlayers extends JavaPlugin {
 		Profile[] profiles = repository.findProfilesByCriteria(names.toArray(new String[100]));
 		log.info("Got a response from Mojang, starting renaming of the 100 batch");
 		System.out.println("DEBUG: " + profiles.length + " profiles from Mojang");
+		if (profiles.length != processed) {
+			log.info("Couldn't get all UUIDs, asked for " + processed + " but only got " + profiles.length);
+			log.info("You can easily repeat the conversion process by setting version to 2 in the config");
+		}
 		for (Profile pr : profiles) {
 			if (pr.getId() == null) {
 				log.warning("Skipping " + pr.getName() + ", UUID is null");
