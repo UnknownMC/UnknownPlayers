@@ -1,9 +1,5 @@
 package net.unknownmc.players;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,6 +7,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.UUID;
 
 public class CommandsHandler implements CommandExecutor {
 
@@ -124,7 +126,8 @@ public class CommandsHandler implements CommandExecutor {
 	 */
 	public void sendPlaytime(Playtime play, CommandSender sender) {
 		long playtime = play.getPlayTime();
-		Player player = Bukkit.getPlayer(play.getUUID());
+        UUID uuid = new UUID(new BigInteger(play.getUUID().substring(0, 16), 16).longValue(), new BigInteger(play.getUUID().substring(16), 16).longValue());
+		Player player = Bukkit.getPlayer(uuid);
 		if (player != null) {
 			if (player.isOnline()) {
 				playtime = (playtime) + (System.currentTimeMillis() - play.getLastJoinTime());
