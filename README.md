@@ -7,7 +7,7 @@ UnknownPlayers currently uses flatfile YAML storage and is updated for UUID-base
 
 Downloading UnknownPlayers
 =========================
-You can download UnknownPlayers from [here](https://bitbucket.org/unknownmc/unknownplayers/downloads).
+You can download UnknownPlayers from [here](downloads).
 
 The latest version is currently **UnknownPlayers 2.0**. It was compiled with **Bukkit 1.7.8-R0.1** (build #1922) and tested with **Spigot #1423**. This plugin is provided without any warranty whatsoever and may break at any time, regardless of the version of Spigot/CraftBukkit/... used.
 
