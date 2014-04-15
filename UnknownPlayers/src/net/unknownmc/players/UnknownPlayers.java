@@ -104,6 +104,9 @@ public class UnknownPlayers extends JavaPlugin {
 				continue;
 			}
 			String name = fl.getName();
+			if (name.length() < 5) {
+				continue;
+			}
 			name = name.substring(0, name.length()-4); // trim the ".yml"
 			names.add(name);
 			processed++;
@@ -115,9 +118,11 @@ public class UnknownPlayers extends JavaPlugin {
 			log.info("Conversion done, no more files to convert!");
 			return;
 		}
+		System.out.println("DEBUG: " + processed + " about to process");
 		log.info("Asking Mojang for 100 players' UUIDS, might take a while?");
 		Profile[] profiles = repository.findProfilesByCriteria(names.toArray(new String[100]));
 		log.info("Got a response from Mojang, starting renaming of the 100 batch");
+		System.out.println("DEBUG: " + profiles.length + " profiles from Mojang");
 		for (Profile pr : profiles) {
 			if (pr.getId() == null) {
 				log.warning("Skipping " + pr.getName() + ", UUID is null");
