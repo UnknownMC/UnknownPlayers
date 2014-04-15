@@ -120,7 +120,7 @@ public class UnknownPlayers extends JavaPlugin {
 		}
 		System.out.println("DEBUG: " + processed + " about to process");
 		log.info("Asking Mojang for 100 players' UUIDS, might take a while?");
-		Profile[] profiles = repository.findProfilesByCriteria(names.toArray(new String[100]));
+		Profile[] profiles = repository.findProfilesByCriteria(names.toArray(new String[names.size()]));
 		log.info("Got a response from Mojang, starting renaming of the 100 batch");
 		System.out.println("DEBUG: " + profiles.length + " profiles from Mojang");
 		if (profiles.length != processed) {
