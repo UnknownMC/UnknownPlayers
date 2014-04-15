@@ -12,8 +12,6 @@ import com.mojang.api.profiles.Profile;
 
 public class EvtListener implements Listener {
 	
-	//UnknownPlayers main;
-	
 	@EventHandler
 	public void join (PlayerJoinEvent e) {
 		Playtime play = new Playtime(UnknownPlayers.getUUID(e.getPlayer())); // This generates file if not found

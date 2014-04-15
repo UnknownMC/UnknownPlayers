@@ -1,9 +1,5 @@
 package net.unknownmc.players;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,6 +7,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.UUID;
 
 public class CommandsHandler implements CommandExecutor {
 
@@ -31,8 +33,6 @@ public class CommandsHandler implements CommandExecutor {
 					sender.sendMessage(ChatColor.RED + "You can only check your playtime (omit all arguments).");
 					return true;
 				}
-				//sender.sendMessage(ChatColor.RED + "Incorrect syntax! Please use " + ChatColor.DARK_RED + "/player <player name>");
-				//return true;
 				player = args[0];
 			} else {
 				if (sender.hasPermission("unknownmc.playtime.other")) {
@@ -42,7 +42,7 @@ public class CommandsHandler implements CommandExecutor {
 				}
 				return true;
 			}
-			if (player == "") {
+			if (player.equals("")) {
 				sender.sendMessage(ChatColor.RED + "Oops, an error occurred!");
 				return true;
 			}
@@ -68,7 +68,7 @@ public class CommandsHandler implements CommandExecutor {
 						Playtime pl = new Playtime(uuid);
 						sendPlaytime(pl, send);
 					}
-				};
+				}.runTaskAsynchronously(Bukkit.getServer().getPluginManager().getPlugin("UnknownPlayers"));
 			}
 			return true;
 		} else if (cmd.getName().equalsIgnoreCase("demote")) {
@@ -121,12 +121,13 @@ public class CommandsHandler implements CommandExecutor {
 	
 	/**
 	 * Send requested playtime information
-	 * @param playtime The instance of Playtime
+	 * @param play The instance of Playtime
 	 * @param sender The requester
 	 */
 	public void sendPlaytime(Playtime play, CommandSender sender) {
 		long playtime = play.getPlayTime();
-		Player player = Bukkit.getPlayer(play.getUUID());
+        UUID uuid = new UUID(new BigInteger(play.getUUID().substring(0, 16), 16).longValue(), new BigInteger(play.getUUID().substring(16), 16).longValue());
+		Player player = Bukkit.getPlayer(uuid);
 		if (player != null) {
 			if (player.isOnline()) {
 				playtime = (playtime) + (System.currentTimeMillis() - play.getLastJoinTime());
