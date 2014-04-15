@@ -118,11 +118,7 @@ public class UnknownPlayers extends JavaPlugin {
 			log.info("Conversion done, no more files to convert!");
 			return;
 		}
-		System.out.println("DEBUG: " + processed + " about to process");
-		log.info("Asking Mojang for 100 players' UUIDS, might take a while?");
 		Profile[] profiles = repository.findProfilesByCriteria(names.toArray(new String[names.size()]));
-		log.info("Got a response from Mojang, starting renaming of the 100 batch");
-		System.out.println("DEBUG: " + profiles.length + " profiles from Mojang");
 		if (profiles.length != processed) {
 			log.info("Couldn't get all UUIDs, asked for " + processed + " but only got " + profiles.length);
 			log.info("You can easily repeat the conversion process by setting version to 2 in the config");
