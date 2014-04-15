@@ -2,6 +2,7 @@ package net.unknownmc.players;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -83,6 +84,37 @@ public class CommandsHandler implements CommandExecutor {
 				sender.sendMessage(ChatColor.RED + "Either " + args[0] + " isn't staff, you don't have the permission to demote them or an error occurred with the plugin. They weren't demoted.");
 				return true;
 			}
+		} else if (cmd.getName().equalsIgnoreCase("names")) {
+			if (!sender.hasPermission("unknownmc.playernames")) {
+				sender.sendMessage(ChatColor.RED + "Nope");
+				return true;
+			}
+			if (args.length != 1) {
+				sender.sendMessage(ChatColor.RED + "Incorrect usage, try /names <player name>");
+				return true;
+			}
+			Player pl = Bukkit.getServer().getPlayerExact(args[0]);
+			if (pl == null) {
+				sender.sendMessage(ChatColor.RED + "The player you're checking should be online.");
+				return true;
+			}
+			String uuid = UnknownPlayers.getUUID(pl);
+			Playtime pt = new Playtime(uuid);
+			List<String> names = pt.getNames();
+			String nameStr = "";
+			if (names.size() == 1) {
+				nameStr = ChatColor.RED + "none";
+			} else {
+				for (String name : names) {
+					if (!name.equalsIgnoreCase(pl.getName())) {
+						if (nameStr.length() != 0) {
+							nameStr = nameStr + ", ";
+						}
+						nameStr = nameStr + name;
+					}
+				}
+			}
+			sender.sendMessage(ChatColor.GREEN + pl.getName() + "'s previous names: " + ChatColor.YELLOW + nameStr);
 		}
 		return false;
 	}

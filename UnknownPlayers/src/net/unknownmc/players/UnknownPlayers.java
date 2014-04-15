@@ -30,6 +30,7 @@ public class UnknownPlayers extends JavaPlugin {
 	public void onEnable() {
 		getCommand("player").setExecutor(new CommandsHandler());
 		getCommand("demote").setExecutor(new CommandsHandler());
+		getCommand("names").setExecutor(new CommandsHandler());
 		uuids = new HashMap<String, String>();
 				
 		folder = new File(getDataFolder(), "players/");

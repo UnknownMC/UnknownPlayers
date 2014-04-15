@@ -10,6 +10,9 @@ commands:
   demote:
     description: Demote a staff member.
     permissions: unknownmc.demote
+  names:
+    description: Gets a player's list of known names.
+    permissions: unknownmc.playernames
 permissions:
   unknownmc.playtime:
     default: true
@@ -19,3 +22,5 @@ permissions:
     default: false
   unknownmc.demote:
     default: op
+  unknownmc.playernames:
+    default: true
