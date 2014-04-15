@@ -55,6 +55,7 @@ public class UnknownPlayers extends JavaPlugin {
 			this.saveConfig();
 		}
 		if (config.getInt("config.version") < 3) {
+			log.info("Converting all old player files to use the UUIDs, this one time process will delay the start up time this one time!");
 			convertToUUID();
 			config.set("config.version", 3);
 			this.saveConfig();
@@ -93,7 +94,6 @@ public class UnknownPlayers extends JavaPlugin {
 	}
 	
 	public void convertToUUID() {
-		log.info("Converting all old player files to use the UUIDs, this one time process will delay the start up time this one time!");
 		List<String> names = new ArrayList<String>();
 		int processed = 0;
 		for (File fl : folder.listFiles()) {
