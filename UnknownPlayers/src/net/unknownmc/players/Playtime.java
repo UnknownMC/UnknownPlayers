@@ -18,7 +18,7 @@ public class Playtime {
 	
 	/**
 	 * The method to be used for getting/setting a player's play time configuration.
-	 * @param pl The player name
+	 * @param uuid The player's UUID
 	 */
 	public Playtime(String uuid) {
 		player = uuid;

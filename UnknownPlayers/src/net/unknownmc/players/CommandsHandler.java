@@ -31,8 +31,6 @@ public class CommandsHandler implements CommandExecutor {
 					sender.sendMessage(ChatColor.RED + "You can only check your playtime (omit all arguments).");
 					return true;
 				}
-				//sender.sendMessage(ChatColor.RED + "Incorrect syntax! Please use " + ChatColor.DARK_RED + "/player <player name>");
-				//return true;
 				player = args[0];
 			} else {
 				if (sender.hasPermission("unknownmc.playtime.other")) {
@@ -42,7 +40,7 @@ public class CommandsHandler implements CommandExecutor {
 				}
 				return true;
 			}
-			if (player == "") {
+			if (player.equals("")) {
 				sender.sendMessage(ChatColor.RED + "Oops, an error occurred!");
 				return true;
 			}
@@ -121,7 +119,7 @@ public class CommandsHandler implements CommandExecutor {
 	
 	/**
 	 * Send requested playtime information
-	 * @param playtime The instance of Playtime
+	 * @param play The instance of Playtime
 	 * @param sender The requester
 	 */
 	public void sendPlaytime(Playtime play, CommandSender sender) {

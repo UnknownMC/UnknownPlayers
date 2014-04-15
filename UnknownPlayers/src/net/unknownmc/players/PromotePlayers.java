@@ -9,9 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PromotePlayers extends BukkitRunnable {
-	
-	//UnknownPlayers main;
-	
+
 	public PromotePlayers (UnknownPlayers pl) {
 		
 	}
