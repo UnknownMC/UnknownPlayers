@@ -11,4 +11,4 @@ You can download UnknownPlayers from [here](downloads).
 
 The latest version is currently **UnknownPlayers 2.0**. It was compiled with **Bukkit 1.7.8-R0.1** (build #1922) and tested with **Spigot #1423**. This plugin is provided without any warranty whatsoever and may break at any time, regardless of the version of Spigot/CraftBukkit/... used.
 
-If you have any questions about this project, I'm usually on IRC: irc.spi.gt #unknownmc.
+If you have any questions about this project, I'm on IRC: irc.esper.net #deprecatednether.
