@@ -90,13 +90,7 @@ public class Playtime {
 			return false;
 		}
 		stats.set("playtime", time);
-		try {
-			stats.save(data);
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
+		return saveConfiguration();
 	}
 	
 	/**
@@ -108,13 +102,7 @@ public class Playtime {
 			return false;
 		}
 		stats.set("lastjoin", System.currentTimeMillis());
-		try {
-			stats.save(data);
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
+		return saveConfiguration();
 	}
 	
 	/**
@@ -141,15 +129,9 @@ public class Playtime {
 	 * @return True on success, false on fail
 	 */
 	public boolean createEmptyConfig() {
-		try {
-			stats.set("firstjoin", System.currentTimeMillis());
-			stats.set("playtime", 0);
-			stats.save(data);
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
+		stats.set("firstjoin", System.currentTimeMillis());
+		stats.set("playtime", 0);
+        return saveConfiguration();
 	}
 	
 	/**
@@ -162,12 +144,7 @@ public class Playtime {
 		if (!names.contains(name)) {
 			names.add(name);
 			stats.set("known-names", names);
-			try {
-				stats.save(data);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			}
+            return saveConfiguration();
 		}
 		return true;
 	}
@@ -196,4 +173,14 @@ public class Playtime {
 	public long getFirstJoin() {
 		return stats.getLong("firstjoin");
 	}
+
+    private boolean saveConfiguration() {
+        try {
+            stats.save(data);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
